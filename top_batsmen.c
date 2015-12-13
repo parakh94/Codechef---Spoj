@@ -1,0 +1,130 @@
+#include<stdio.h>
+#include<string.h>
+#include<math.h>
+#define ll long long int
+#define sf scanf
+#define pf printf
+#include<stdlib.h>
+long long int fact(long long int);
+long long int binarySearch(long long int arr[],long long  int l, long long int r, long long int x)
+{
+  while (l <= r)
+  {
+    long long int m = l + (r-l)/2;
+ 
+    if (arr[m] == x) return m;  // Check if x is present at mid
+ 
+    if (arr[m] < x) l = m + 1; // If x greater, ignore left half
+ 
+    else r = m - 1; // If x is smaller, ignore left half
+  }
+  return -1; // if we reach here, then element was not present
+}
+void merge(long long int arr[], long long int l, long long int m, long long int r)
+{
+    long long int i, j, k;
+    long long int n1 = m - l + 1;
+    long long int n2 =  r - m;
+ 
+    /* create temp arrays */
+   long long  int L[n1], R[n2];
+ 
+    /* Copy data to temp arrays L[] and R[] */
+    for(i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for(j = 0; j < n2; j++)
+        R[j] = arr[m + 1+ j];
+ 
+    /* Merge the temp arrays back into arr[l..r]*/
+    i = 0;
+    j = 0;
+    k = l;
+    while (i < n1 && j < n2)
+    {
+        if (L[i] <= R[j])
+        {
+            arr[k] = L[i];
+            i++;
+        }
+        else
+        {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+ 
+    /* Copy the remaining elements of L[], if there are any */
+    while (i < n1)
+    {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+ 
+    /* Copy the remaining elements of R[], if there are any */
+    while (j < n2)
+    {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+ 
+/* l is for left index and r is right index of the sub-array
+  of arr to be sorted */
+void mergeSort(long long int arr[], long long int l, long long int r)
+{
+    if (l < r)
+    {
+       long long  int m = l+(r-l)/2; //Same as (l+r)/2, but avoids overflow for large l and h
+        mergeSort(arr, l, m);
+        mergeSort(arr, m+1, r);
+        merge(arr, l, m, r);
+    }
+}
+void printArray(long long int A[], long long int size)
+{
+   long long  int i;
+    for (i=1; i <= size; i++)
+        printf("%lld ", A[i]);
+    printf("\n");
+}
+
+int main()
+{
+	ll t;
+	sf("%lld",&t);
+	while(t--)
+	{
+		ll a[20],i,k,x=0,y=0,z,b;
+		for(i=1;i<=11;i++)
+		sf("%lld",&a[i]);
+		sf("%lld",&k);
+		mergeSort(a, 1, 11);
+		//printArray(a, 11);
+		for(i=1;i<12-k;i++)
+		{
+			if(a[i]==a[12-k])
+			x++;
+		}
+		for(i=12-k;i<12;i++)
+		{
+			if(a[i]==a[12-k])
+			y++;
+		}
+		//pf("%lld",x);
+		//pf("%lld",y);
+		z=x+y;
+		b=fact(z)/(fact(y)*fact(z-y));
+		pf("%lld\n",b);
+	}
+	return 0;
+}
+long long int fact(long long int c)
+{
+	if(c==1||c==0)
+	return 1;
+	else 
+	return(c*fact(c-1));
+}

@@ -1,0 +1,33 @@
+#include<stdio.h>
+int main()
+{
+	long long int n,a[100000],i,r,s=0,c=0;
+	scanf("%lld",&n);
+	for(i=0;i<1000;i++)
+	a[i]=0;
+	while(n)
+	{
+		r=n%10;
+		s=s+r*r;
+		n=n/10;
+		if(n==0)
+		c++;
+		if(s==1&&n==0)
+		{
+			printf("%d",c);
+			break;
+		}		
+		if(n==0&&a[s]==1)
+		{
+			printf("-1");
+			break;
+		}
+		if(n==0&&a[s]!=1)
+		a[s]++;
+		if(n==0)
+		{
+			n=s;
+			s=0;
+		}
+	}
+}
